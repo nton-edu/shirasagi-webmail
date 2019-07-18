@@ -1,0 +1,18 @@
+version: '3'
+services:
+  shirasagi:
+    image: imasuda/shirasagi_img
+    ports:
+      - "3000:3000"
+    command: "cd /var/www/shirasagi && rake unicorn:start"
+    volumes: "/home/vagrant/shared/db:/data/db"
+  mail:
+    image: shirasagi/mail
+    volumes:
+      - /home/vagrant/shared/dovecot:/etc/dovecot
+      - /home/vagrant/shared/vmailbox:/etc/postfix/vmailbox
+    ports:
+      - "143:143"
+      - "587:587"
+    depends_on:
+      - shirasagi
